@@ -1,7 +1,7 @@
 defmodule Downloadex.Downloader do
   use GenServer, restart: :transient
 
-  alias Downloadex.{Scheduler, Reporter, DownloadQueue}
+  alias Downloadex.{Scheduler, Reporter, DownloadQueue, Utils}
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
@@ -14,6 +14,15 @@ defmodule Downloadex.Downloader do
 
   def handle_info(:do_one_url, id) do
     download(DownloadQueue.dequeue(), id)
+  end
+
+  def get_file_length(headers) do
+    case headers
+         |> Enum.filter(fn {header, _value} -> String.downcase(header) == "content-length" end)
+         |> Enum.at(0) do
+      {_, value} -> String.to_integer(value)
+      _ -> nil
+    end
   end
 
   defp download(nil, id) do
@@ -30,8 +39,9 @@ defmodule Downloadex.Downloader do
         async: :once
       )
 
-    filename = downloadable.url |> URI.parse() |> Map.fetch!(:path) |> Path.basename()
+    filename = Utils.get_url_filename(downloadable.url)
     filepath = Path.join([downloadable.path, filename])
+
     file = File.open!(filepath, [:write])
 
     async_download = fn resp, fd, download_fn, total_size ->
@@ -39,13 +49,18 @@ defmodule Downloadex.Downloader do
 
       receive do
         %HTTPoison.AsyncStatus{code: status_code, id: ^resp_id} ->
-          # IO.inspect(status_code)
-          HTTPoison.stream_next(resp)
-          download_fn.(resp, fd, download_fn, 0)
+          case status_code do
+            200 ->
+              HTTPoison.stream_next(resp)
+              download_fn.(resp, fd, download_fn, 0)
+
+            code ->
+              IO.inspect("Unable to download: #{downloadable.url}: status code #{code}")
+          end
 
         %HTTPoison.AsyncHeaders{headers: headers, id: ^resp_id} ->
-          # IO.inspect(headers)
-          total_size = Map.new(headers)["content-length"] |> String.to_integer()
+          total_size = get_file_length(headers)
+
           send_report(
             id,
             downloadable,
@@ -90,5 +105,4 @@ defmodule Downloadex.Downloader do
       id
     )
   end
-
 end

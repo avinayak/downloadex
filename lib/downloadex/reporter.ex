@@ -36,8 +36,6 @@ defmodule Downloadex.Reporter do
     IO.write(IO.ANSI.cursor_up(map_size(updated_state)))
     IO.write(IO.ANSI.blink_off())
 
-
-
     {:noreply, updated_state}
   end
 

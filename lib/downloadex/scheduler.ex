@@ -31,10 +31,28 @@ defmodule Downloadex.Scheduler do
   end
 
   @impl true
+  def handle_info(:kill_me_pls, state) do
+    {:stop, :normal, state}
+  end
+
+
+  @impl true
+  def terminate(_reason, state) do
+    # Do Shutdown Stuff
+
+    IO.puts "Going Down: #{inspect(state)}"
+    :normal
+  end
+
+  @impl true
   def handle_cast(:done, _worker_count = 1) do
     Reporter.done(0)
-    System.halt(0)
+    send(self(), :kill_me_pls)
+    {:noreply, 0}
+
+    # System.halt(0)
   end
+
 
   @impl true
   def handle_cast(:done, worker_count) do
