@@ -17,8 +17,8 @@ defmodule Downloadex.Scheduler do
   end
 
   @impl true
-  def init({urls, path, n_workers}) do
-    DownloadQueue.initialzie(urls, path)
+  def init({urls, path, n_workers, headers}) do
+    DownloadQueue.initialzie(urls, path, headers)
     Process.send_after(self(), :kickoff, 0)
     {:ok, n_workers}
   end

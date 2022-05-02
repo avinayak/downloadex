@@ -3,9 +3,18 @@ defmodule Downloadex do
   Documentation for `Downloadex`.
   """
 
-  def download(urls, path, n_workers) do
-    Downloadex.Scheduler.start_link({urls, path, n_workers})
+  @user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.0.0 Safari/537.36"
+
+  @default_headers [
+    {"User-Agent", @user_agent},
+    {"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"},
+    {"Accept-Language", "en-US,en;q=0.5"},
+    {"DNT", "1"},
+    {"Upgrade-Insecure-Requests", "1"},
+    {"Connection", "keep-alive"}
+  ]
+
+  def download(urls, path, n_workers, headers \\ @default_headers) do
+    Downloadex.Scheduler.start_link({urls, path, n_workers, headers})
   end
 end
-
-# Downloadex.download(["https://d214hhm15p4t1d.cloudfront.net/npr/223598b521fd02d762cf1416e074f1bf3ec7ef6b/img/city-guide-default.jpg"], ".", 3)

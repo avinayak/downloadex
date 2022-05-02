@@ -9,6 +9,7 @@ defmodule Downloadex.DownloadableFile do
     downloaded: 0,
     status: false,
     error: nil,
-    retry_count: 0
+    retry_count: 0,
+    headers: []
   ]
 end

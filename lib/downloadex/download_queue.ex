@@ -9,8 +9,8 @@ defmodule Downloadex.DownloadQueue do
     GenServer.start_link(__MODULE__, :no_args, name: __MODULE__)
   end
 
-  def initialzie(urls, path) do
-    GenServer.cast(__MODULE__, {:initialzie, urls, path})
+  def initialzie(urls, path, headers) do
+    GenServer.cast(__MODULE__, {:initialzie, urls, path, headers})
   end
 
   def dequeue() do
@@ -28,8 +28,8 @@ defmodule Downloadex.DownloadQueue do
   end
 
   @impl true
-  def handle_cast({:initialzie, urls, path}, _queue) do
-    downloads = Enum.map(urls, &%DownloadableFile{url: &1, path: path})
+  def handle_cast({:initialzie, urls, path, headers}, _queue) do
+    downloads = Enum.map(urls, &%DownloadableFile{url: &1, path: path, headers: headers})
     {:noreply, downloads}
   end
 

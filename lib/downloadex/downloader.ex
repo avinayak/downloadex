@@ -34,7 +34,7 @@ defmodule Downloadex.Downloader do
 
   defp download(downloadable, id) do
     resp =
-      HTTPoison.get!(downloadable.url, %{},
+      HTTPoison.get!(downloadable.url, downloadable.headers,
         stream_to: self(),
         async: :once
       )
