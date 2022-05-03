@@ -1,5 +1,7 @@
 # Downloadex
 
+[![HitCount](https://hits.dwyl.com/avinayak/downloadex.svg?style=flat-square&show=unique)](http://hits.dwyl.com/avinayak/downloadex)
+
 An Elixir library to download large amounts of file in parallel.
 
 ![Demo](https://github.com/avinayak/downloadex/blob/master/downloadex.gif?raw=true)
