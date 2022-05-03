@@ -6,7 +6,7 @@ defmodule Downloadex.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      Downloadex.Reporter,
+      Downloadex.Monitor,
       Downloadex.DownloadQueue,
       Downloadex.DownloaderSupervisor,
       # {Downloadex.Scheduler, {[], ".", 3}}

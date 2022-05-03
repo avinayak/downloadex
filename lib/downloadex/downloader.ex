@@ -1,7 +1,7 @@
 defmodule Downloadex.Downloader do
   use GenServer, restart: :transient
 
-  alias Downloadex.{Scheduler, Reporter, DownloadQueue, Utils}
+  alias Downloadex.{Scheduler, Monitor, DownloadQueue, Utils}
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
@@ -27,7 +27,7 @@ defmodule Downloadex.Downloader do
 
   defp download(nil, id) do
     Scheduler.done()
-    Reporter.done(id)
+    Monitor.done(id)
 
     {:stop, :normal, id}
   end
@@ -36,12 +36,13 @@ defmodule Downloadex.Downloader do
     resp =
       HTTPoison.get!(downloadable.url, downloadable.headers,
         stream_to: self(),
-        async: :once
+        async: :once,
+        hackney: [pool: false]
       )
 
     filename = Utils.get_url_filename(downloadable.url)
     filepath = Path.join([downloadable.path, filename])
-
+    File.mkdir_p!(Path.dirname(filepath))
     file = File.open!(filepath, [:write])
 
     async_download = fn resp, fd, download_fn, total_size ->
@@ -88,6 +89,15 @@ defmodule Downloadex.Downloader do
 
         %HTTPoison.AsyncEnd{id: ^resp_id} ->
           File.close(fd)
+
+        %HTTPoison.Error{reason: _} ->
+          if(downloadable.retry_count < 5) do
+            IO.inspect("ReQueueing #{downloadable.url}")
+            retry(downloadable)
+          end
+
+        e ->
+          IO.inspect("Unable to download: #{downloadable.url}: #{e}")
       end
     end
 
@@ -97,8 +107,12 @@ defmodule Downloadex.Downloader do
     {:noreply, id}
   end
 
+  def retry(downloadable) do
+    DownloadQueue.enque(Map.merge(downloadable, %{retry_count: downloadable.retry_count + 1}))
+  end
+
   defp send_report(id, downloadable, size, downloaded) do
-    Reporter.update_progress(
+    Monitor.update_progress(
       downloadable
       |> Map.put(:size, size)
       |> Map.put(:downloaded, downloaded),

@@ -2,7 +2,7 @@ defmodule Downloadex.Scheduler do
   @moduledoc false
 
   use GenServer
-  alias Downloadex.{DownloadQueue, Reporter}
+  alias Downloadex.{DownloadQueue, Monitor}
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args, name: __MODULE__)
@@ -46,7 +46,7 @@ defmodule Downloadex.Scheduler do
 
   @impl true
   def handle_cast(:done, _worker_count = 1) do
-    Reporter.done(0)
+    Monitor.done(0)
     send(self(), :kill_me_pls)
     {:noreply, 0}
 

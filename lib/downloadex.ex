@@ -15,6 +15,13 @@ defmodule Downloadex do
   ]
 
   def download(urls, path, n_workers, headers \\ @default_headers) do
-    Downloadex.Scheduler.start_link({urls, path, n_workers, headers})
+    {:ok, pid} = Downloadex.Scheduler.start_link({urls, path, n_workers, headers})
+
+    ref = Process.monitor(pid)
+
+    receive do
+      {:DOWN, ^ref, _, _, _} ->
+        true
+    end
   end
 end

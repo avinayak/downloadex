@@ -1,4 +1,4 @@
-defmodule Downloadex.Reporter do
+defmodule Downloadex.Monitor do
   @moduledoc false
 
   alias Downloadex.Bars
@@ -14,7 +14,7 @@ defmodule Downloadex.Reporter do
   end
 
   def done(worker_id) do
-    GenServer.call(__MODULE__, {:done, worker_id})
+    GenServer.call(__MODULE__, {:done, worker_id}, :infinity)
   end
 
   @impl true
