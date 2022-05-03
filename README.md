@@ -1,7 +1,6 @@
 # Downloadex
 
-**TODO: Add description**
-
+An Elixir library to download large amounts of file in parallel.
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -15,7 +14,8 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/downloadex>.
+## TODO
 
+* Benchmarks
+* Experiemnt with chunked downloads using Gun
+* More customization

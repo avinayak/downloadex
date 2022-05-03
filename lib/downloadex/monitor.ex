@@ -2,7 +2,6 @@ defmodule Downloadex.Monitor do
   @moduledoc false
 
   alias Downloadex.Bars
-
   use GenServer
 
   def start_link(_) do
