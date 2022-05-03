@@ -5,12 +5,10 @@ defmodule Downloadex.Bars do
 
   alias Downloadex.{DownloadableFile, Utils}
 
-  @bar_width_default 50
+  @bar_width_default 100
 
   def render_bars(downloadables, char_empty \\ "_", char_full \\ "#") do
-    columns_size =  @bar_width_default
-
-    bar_width = div(columns_size, 4)
+    bar_width = div(@bar_width_default, 4)
 
     downloadables
     |> Map.values()
@@ -19,15 +17,15 @@ defmodule Downloadex.Bars do
       filename = Utils.get_url_filename(url)
 
       percentage =
-        ((fraction * 100) |> :erlang.float_to_binary(decimals: 1) |> String.pad_leading(10)) <>
+        ((fraction * 100) |> :erlang.float_to_binary(decimals: 1) |> String.pad_leading(6)) <>
           " %"
 
       line =
         percentage <>
           bar(fraction, char_empty, char_full, bar_width) <> filename
 
-      if columns_size > String.length(line) do
-        line <> String.duplicate(" ", columns_size - String.length(line) - 1)
+      if @bar_width_default > String.length(line) do
+        line <> String.duplicate(" ", @bar_width_default - String.length(line) - 1)
       else
         line
       end

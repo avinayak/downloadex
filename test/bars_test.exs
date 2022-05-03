@@ -18,8 +18,8 @@ defmodule Downloadex.BarsTest do
     }
 
     assert Bars.render_bars(downloads) == [
-             "      22.5 %|##__________|file1.txt              ",
-             "      10.0 %|#___________|file2.txt              "
+             "  22.5 %|#####____________________|file1.txt                                                       ",
+             "  10.0 %|##_______________________|file2.txt                                                       "
            ]
   end
 

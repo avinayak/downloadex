@@ -1,6 +1,6 @@
 defmodule Downloadex do
   @moduledoc """
-  Documentation for `Downloadex`.
+  Downloadex is a library to download large number of files in parallel.
   """
 
   @user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.0.0 Safari/537.36"
