@@ -11,7 +11,8 @@ defmodule Downloadex.DownloadQueueTest do
   test "Queue" do
     DownloadQueue.initialzie(
       ["http://example.com/file1.txt", "http://example.com/file2.txt"],
-      "."
+      ".",
+      []
     )
 
     assert DownloadQueue.dequeue() == %DownloadableFile{

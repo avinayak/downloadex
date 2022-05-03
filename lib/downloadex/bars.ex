@@ -4,14 +4,7 @@ defmodule Downloadex.Bars do
   @bar_width_default 50
 
   def render_bars(downloadables, char_empty \\ "_", char_full \\ "#") do
-    columns_size =
-      case :io.columns() do
-        {:ok, width} ->
-          width
-
-        {:error, _} ->
-          @bar_width_default
-      end
+    columns_size =  @bar_width_default
 
     bar_width = div(columns_size, 4)
 

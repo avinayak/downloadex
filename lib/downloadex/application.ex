@@ -8,15 +8,10 @@ defmodule Downloadex.Application do
     children = [
       Downloadex.Monitor,
       Downloadex.DownloadQueue,
-      Downloadex.DownloaderSupervisor,
-      # {Downloadex.Scheduler, {[], ".", 3}}
+      Downloadex.DownloaderSupervisor
     ]
 
     opts = [strategy: :one_for_all, name: Downloadex.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
-
-
-# }
-# # ]
