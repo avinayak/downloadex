@@ -1,6 +1,9 @@
 # Downloadex
 
 An Elixir library to download large amounts of file in parallel.
+
+![Demo](https://github.com/avinayak/downloadex/blob/master/downloadex.gif?raw=true)
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
