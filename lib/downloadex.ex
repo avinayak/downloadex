@@ -3,25 +3,35 @@ defmodule Downloadex do
   Downloadex is a library to download large number of files in parallel.
   """
 
-  @user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.0.0 Safari/537.36"
+  @doc """
+    downloads a list of urls to a given directory in parallel.
 
-  @default_headers [
-    {"User-Agent", @user_agent},
-    {"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"},
-    {"Accept-Language", "en-US,en;q=0.5"},
-    {"DNT", "1"},
-    {"Upgrade-Insecure-Requests", "1"},
-    {"Connection", "keep-alive"}
-  ]
+  ## Examples
 
-  def download(urls, path, n_workers, headers \\ @default_headers) do
+      iex> Downloadex.download(
+        [ "https://example.com/file1.txt",
+          "https://example.com/file2.txt",
+          "https://example.com/file3.txt",
+          "https://example.com/file4.txt"],
+        "./images",
+        3 # number of parallel downloads
+      )
+      :ok
+
+  """
+  def download(
+        urls,
+        path \\ ".",
+        n_workers \\ 4,
+        headers \\ []
+      ) do
     {:ok, pid} = Downloadex.Scheduler.start_link({urls, path, n_workers, headers})
 
     ref = Process.monitor(pid)
 
     receive do
       {:DOWN, ^ref, _, _, _} ->
-        true
+        :ok
     end
   end
 end

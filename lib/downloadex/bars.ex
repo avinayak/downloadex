@@ -1,7 +1,5 @@
 defmodule Downloadex.Bars do
-  @moduledoc """
-  Utilities for rendering bars.
-  """
+  @moduledoc false
 
   alias Downloadex.{DownloadableFile, Utils}
 

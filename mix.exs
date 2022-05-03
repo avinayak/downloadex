@@ -16,7 +16,7 @@ defmodule Downloadex.MixProject do
 
   defp description do
     """
-    An Elixir library to download large amounts of file in parallel.
+    Downloadex is a library to download large number of files in parallel.
     """
   end
 

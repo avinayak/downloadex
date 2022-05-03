@@ -1,11 +1,5 @@
 defmodule Downloadex.Downloader do
-  @moduledoc """
-  Genserver to download files from a queue of urls.
-  This module is the core worker process that is spawned by the
-  DownloaderSupervisor. It checks DownloadQueue for new urls to download.
-  after init and also after each download till there are no more urls to download.
-  Then, it calls done() on the Monitor.
-  """
+  @moduledoc false
 
   use GenServer, restart: :transient
 

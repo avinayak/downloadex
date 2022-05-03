@@ -1,7 +1,5 @@
 defmodule Downloadex.DownloadableFile do
-  @moduledoc """
-  Structure for a downloadable file.
-  """
+  @moduledoc false
   defstruct [
     :url,
     :path,
