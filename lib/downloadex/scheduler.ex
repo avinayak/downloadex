@@ -42,7 +42,7 @@ defmodule Downloadex.Scheduler do
   end
 
   @impl true
-  def handle_cast(:done, _worker_count = 1) do
+  def handle_cast(:done, 1) do
     Monitor.done(0)
     send(self(), :kill)
     {:noreply, 0}
@@ -51,6 +51,7 @@ defmodule Downloadex.Scheduler do
 
   @impl true
   def handle_cast(:done, worker_count) do
+    Monitor.done(worker_count)
     {:noreply, worker_count - 1}
   end
 end

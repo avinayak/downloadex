@@ -1,4 +1,8 @@
 defmodule Downloadex.Bars do
+  @moduledoc """
+  Utilities for rendering bars.
+  """
+
   alias Downloadex.{DownloadableFile, Utils}
 
   @bar_width_default 50
@@ -23,7 +27,7 @@ defmodule Downloadex.Bars do
           bar(fraction, char_empty, char_full, bar_width) <> filename
 
       if columns_size > String.length(line) do
-        line <> String.duplicate(" ", columns_size - String.length(line) -1)
+        line <> String.duplicate(" ", columns_size - String.length(line) - 1)
       else
         line
       end

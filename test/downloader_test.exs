@@ -914,14 +914,11 @@ defmodule Downloadex.DownloaderTest do
       4
     )
 
-    assert Path.wildcard(Path.join([test_folder, "*"])) == [
-             "test/downloads/3e22bf7cad5f247a8a8f4829a2efc906.jpg",
-             "test/downloads/605972b366fd77a0a975ddfbb993e068.jpg",
-             "test/downloads/8641513241cfba6da8d8b9f7b6ba6bcc.jpg",
-             "test/downloads/8a73c84c21a374788af307766940aa7b.png"
-           ]
+    assert Path.wildcard(Path.join([test_folder, "*"])) |> Enum.sort() ==
+             @test_urls
+             |> Enum.map(&Path.join([test_folder, hd(Enum.reverse(String.split(&1, "/")))]))
+             |> Enum.sort()
 
     File.rm_rf(test_folder)
-    # assert true
   end
 end

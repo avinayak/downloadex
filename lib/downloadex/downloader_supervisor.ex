@@ -1,4 +1,8 @@
 defmodule Downloadex.DownloaderSupervisor do
+  @moduledoc """
+  Supervisor for Downloadex.
+  """
+
   use DynamicSupervisor
 
   @me WorkerSupervisor
