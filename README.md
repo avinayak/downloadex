@@ -1,6 +1,6 @@
 # Downloadex
 
-[![HitCount](https://hits.dwyl.com/avinayak/downloadex.svg?style=flat-square&show=unique)](http://hits.dwyl.com/avinayak/downloadex)
+[![HitCount](https://hits.dwyl.com/avinayak/downloadex.svg?style=flat-square&show=unique)](http://hits.dwyl.com/avinayak/downloadex) ![Hex.pm](https://img.shields.io/hexpm/v/downloadex?style=flat-square)
 
 An Elixir library to download large amounts of file in parallel.
 
